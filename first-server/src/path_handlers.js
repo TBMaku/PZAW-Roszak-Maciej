@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 const index_html = readFileSync('./static/index.html')
 
 
+
 const pathConfigs = [
     {
         path: "/",
