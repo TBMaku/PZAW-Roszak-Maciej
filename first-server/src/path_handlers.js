@@ -14,6 +14,15 @@ const pathConfigs = [
             res.end(index_html);
         }
 
+    },
+        {
+        path: "/favicon.ico",
+        allowed_methods: ["GET"],
+        handler: (req, res) =>{
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.end(favicon_ico);
+        }
+
     }
 ]
 
