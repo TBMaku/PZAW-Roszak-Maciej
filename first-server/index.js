@@ -1,9 +1,8 @@
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { handlePath } from './src/path_handlers.js';
-import { readFileSync } from 'node:fs';
 
-const favicon_ico = readFileSync("./static/favicon.ico");
+
 
 const server = createServer((req, res) => {
 
