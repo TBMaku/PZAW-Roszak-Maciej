@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Notatnik</title>
+</head>
+<body>
+  <h1>Moje Notatki</h1>
+
+  <ul>
+    <% if (notes.length === 0) { %>
+      <li>Brak notatek.</li>
+    <% } else { %>
+      <% notes.forEach(n => { %>
+        <li><%= n %></li>
+      <% }) %>
+    <% } %>
+  </ul>
+
+  <a href="/add">Dodaj notatkę</a>
+</body>
+</html>

@@ -1,32 +1,37 @@
 import express from "express";
-import flashcards from "./models/flashcards.js";
-
-const port = 8000;
 
 const app = express();
-app.set("view engine", "ejs");
-app.use(express.static("public"));
+const port = 8000;
 
-app.get("/cards", (req, res) => {
-  res.render("categories", {
-    title: "Kategorie",
-    categories: flashcards.getCategorySummaries(),
-  });
+app.set("view engine", "ejs");
+
+app.use(express.urlencoded({ extended: true }));
+
+
+const notes = [];
+
+
+app.get("/", (req, res) => {
+  res.render("index", { notes });
 });
 
-app.get("/cards/:category_id", (req, res) => {
-  const category = flashcards.getCategory(req.params.category_id);
-  if (category != null) {
-    res.render("category", {
-      title: category.name,
-      category,
-    });
-  } else {
-    res.sendStatus(404);
+
+app.get("/add", (req, res) => {
+  res.render("add");
+});
+
+
+app.post("/add", (req, res) => {
+  const { text } = req.body;
+
+
+  if (typeof text === "string" && text.trim() !== "") {
+    notes.push(text.trim());
   }
+
+  res.redirect("/");
 });
 
 app.listen(port, () => {
-  console.log(`Server listening on http://localhost:${port}`);
+  console.log(`Serwer działa: http://localhost:${port}`);
 });
-
