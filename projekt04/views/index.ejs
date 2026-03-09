@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Notatnik</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app">
+    <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <div>
+        <h1>Notatki</h1>
+        <div style="font-size:0.9rem;color:#6b7280;">
+          Odwiedziłeś tę stronę <strong><%= visits %></strong> razy.
+          <a href="/reset-visits" style="margin-left:10px;color:var(--accent);">Wyczyść</a>
+        </div>
+      </div>
+      <div class="controls">
+        <a class="btn-secondary" href="/add">Dodaj notatkę</a>
+      </div>
+    </header>
+
+    <ul>
+      <% notes.forEach(n => { %>
+        <li>
+          <span class="text"><%= n.text %></span>
+          <div class="actions">
+            <a class="btn-secondary" href="/edit/<%= n.id %>">Edytuj</a>
+            <form method="POST" action="/delete/<%= n.id %>" class="inline">
+              <button>Usuń</button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</body>
+</html>
