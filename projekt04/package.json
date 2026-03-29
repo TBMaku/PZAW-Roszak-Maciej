@@ -1,19 +1,17 @@
 {
-  "name": "projekt02",
+  "name": "projekt04",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "populate": "node utils/populate_db.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "argon2": "^0.31.2",
     "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "express": "^5.2.1",
-    "sqlite3": "^5.1.7"
+    "morgan": "^1.10.0"
   }
 }

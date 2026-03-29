@@ -10,28 +10,51 @@
     <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
       <div>
         <h1>Notatki</h1>
-        <div style="font-size:0.9rem;color:#6b7280;">
-          Odwiedziłeś tę stronę <strong><%= visits %></strong> razy.
-          <a href="/reset-visits" style="margin-left:10px;color:var(--accent);">Wyczyść</a>
-        </div>
       </div>
       <div class="controls">
-        <a class="btn-secondary" href="/add">Dodaj notatkę</a>
+        <% if (user) { %>
+          <span style="font-size:0.85rem;color:#6b7280;">
+            👤 <strong><%= user.username %></strong>
+            <% if (user.is_admin) { %><span class="badge-admin">admin</span><% } %>
+          </span>
+          <a class="btn-secondary" href="/add">Dodaj notatkę</a>
+          <a class="btn-secondary" href="/logout">Wyloguj</a>
+        <% } else { %>
+          <a class="btn-secondary" href="/login">Zaloguj się</a>
+          <a class="btn-secondary" href="/signup">Rejestracja</a>
+        <% } %>
       </div>
     </header>
 
     <ul>
       <% notes.forEach(n => { %>
         <li>
-          <span class="text"><%= n.text %></span>
+          <div style="flex:1 1 auto;">
+            <span class="text"><%= n.text %></span>
+            <div style="font-size:0.78rem;color:#9ca3af;margin-top:3px;">
+               <%= n.author_name %>
+            </div>
+          </div>
           <div class="actions">
-            <a class="btn-secondary" href="/edit/<%= n.id %>">Edytuj</a>
-            <form method="POST" action="/delete/<%= n.id %>" class="inline">
-              <button>Usuń</button>
-            </form>
+            <% if (user && (user.id === n.author_id || user.is_admin)) { %>
+              <a class="btn-secondary" href="/edit/<%= n.id %>">Edytuj</a>
+              <form method="POST" action="/delete/<%= n.id %>" style="display:inline;">
+                <button>Usuń</button>
+              </form>
+            <% } %>
           </div>
         </li>
       <% }) %>
+      <% if (notes.length === 0) { %>
+        <li style="color:#9ca3af;font-style:italic;">
+          Brak notatek.
+          <% if (user) { %>
+            <a href="/add">Dodaj pierwszą!</a>
+          <% } else { %>
+            <a href="/login">Zaloguj się</a>, żeby dodać.
+          <% } %>
+        </li>
+      <% } %>
     </ul>
   </div>
 </body>

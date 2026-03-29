@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Rejestracja</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app" style="max-width:420px;">
+    <header style="margin-bottom:18px;">
+      <h1>Rejestracja</h1>
+    </header>
+
+    <% if (error) { %>
+      <div class="error-box"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/signup" style="display:grid;gap:10px;">
+      <input type="text" name="username" required placeholder="Nazwa użytkownika (min. 3 znaki)" minlength="3" maxlength="25">
+      <input type="password" name="password" required placeholder="Hasło (min. 8 znaków)" minlength="8">
+      <input type="password" name="password_confirm" required placeholder="Powtórz hasło" minlength="8">
+      <div style="display:flex;gap:8px;">
+        <button class="btn-primary">Zarejestruj</button>
+        <a class="btn-secondary" href="/">Powrót</a>
+      </div>
+    </form>
+
+    <div style="margin-top:14px;font-size:0.9rem;color:#6b7280;">
+      Masz już konto? <a href="/login">Zaloguj się</a>
+    </div>
+  </div>
+</body>
+</html>

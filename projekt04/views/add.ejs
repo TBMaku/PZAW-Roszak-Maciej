@@ -2,14 +2,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Dodaj</title>
+  <title>Dodaj notatkę</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <div class="app">
     <header style="margin-bottom:18px;">
       <h1>Dodaj notatkę</h1>
+      <div style="font-size:0.85rem;color:#6b7280;">Zalogowany jako <strong><%= user.username %></strong></div>
     </header>
+
+    <% if (error) { %>
+      <div class="error-box"><%= error %></div>
+    <% } %>
 
     <form method="POST" style="display:grid;gap:10px;">
       <input type="text" name="text" required placeholder="Treść notatki">
