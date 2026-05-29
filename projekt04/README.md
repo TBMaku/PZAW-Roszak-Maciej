@@ -31,7 +31,7 @@ http://localhost:8000
 ```
 
 ## Konta testowe
-- Administrator: 'admin' / 'admin123'
+- Administrator: 'admin' / hasło użytkownika
 - Student: 'student' / 'student1'
 
 ## Co robi aplikacja
