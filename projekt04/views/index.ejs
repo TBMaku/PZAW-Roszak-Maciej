@@ -13,7 +13,7 @@
       </div>
       <div class="controls">
         <% if (user) { %>
-          <span style="font-size:0.85rem;color:#6b7280;">
+          <span style="display:flex;flex-direction:row;align-items:center;">
             👤 <strong><%= user.username %></strong>
             <% if (user.is_admin) { %><span class="badge-admin">admin</span><% } %>
           </span>
