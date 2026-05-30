@@ -16,20 +16,22 @@ db.exec(`
 `);
 
 const db_ops = {
-  create_session: db.prepare(
-    "INSERT INTO sessions (id, user_id, created_at) VALUES (?, ?, ?) RETURNING id, user_id, created_at;"
-  ),
-  get_session: db.prepare(
-    "SELECT id, user_id, created_at FROM sessions WHERE id = ?;"
-  ),
-  delete_session: db.prepare(
-    "DELETE FROM sessions WHERE id = ?;"
-  ),
+  create_session: (id, user_id, created_at) =>
+    db.prepare("INSERT INTO sessions (id, user_id, created_at) VALUES (?, ?, ?) RETURNING CAST(id AS TEXT) as id, user_id, created_at;")
+      .get(id, user_id, created_at),
+
+  get_session: (id) =>
+    db.prepare("SELECT CAST(id AS TEXT) as id, user_id, created_at FROM sessions WHERE id = ?;")
+      .get(id),
+
+  delete_session: (id) =>
+    db.prepare("DELETE FROM sessions WHERE id = ?;")
+      .run(id),
 };
 
 export function createSession(user_id, res) {
   const session_id = randomBytes(8).readBigInt64BE();
-  const session = db_ops.create_session.get(session_id, user_id ?? null, Date.now());
+  const session = db_ops.create_session(session_id, user_id ?? null, Date.now());
 
   res.cookie(SESSION_COOKIE, session.id.toString(), {
     maxAge: ONE_WEEK,
@@ -42,7 +44,7 @@ export function createSession(user_id, res) {
 
 export function deleteSession(res) {
   if (res.locals.session) {
-    db_ops.delete_session.run(res.locals.session.id);
+    db_ops.delete_session(res.locals.session.id);
     res.clearCookie(SESSION_COOKIE);
     res.locals.session = null;
     res.locals.user = null;
@@ -60,7 +62,7 @@ export function sessionHandler(req, res, next) {
     }
   }
 
-  let session = session_id != null ? db_ops.get_session.get(session_id) : null;
+  let session = session_id != null ? db_ops.get_session(session_id) : null;
 
   if (session != null && session.user_id != null) {
     res.locals.session = session;

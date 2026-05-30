@@ -16,6 +16,8 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(sessionHandler);
 
+
+
 function login_required(req, res, next) {
   if (res.locals.user == null) {
     res.redirect(`/login?next=${encodeURIComponent(req.path)}`);
@@ -131,6 +133,15 @@ app.post("/login", async (req, res) => {
 app.get("/logout", (req, res) => {
   deleteSession(res);
   res.redirect("/");
+});
+
+
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.too.large' || err.status === 413) {
+    res.render("add", { user: res.locals.user, error: "Treść notatki jest za długa." });
+    return;
+  }
+  next(err);
 });
 
 app.listen(port, () => {

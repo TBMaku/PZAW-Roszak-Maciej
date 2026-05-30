@@ -4,7 +4,7 @@
 node utils/generate_env.js
 ```
 
-2. Skopiuj wygenerowane polecenia i ustaw je w terminalu.
+2. Osobno skopiuj wygenerowane polecenia i ustaw je w terminalu.
 
 3. Zainstaluj zależności:
 

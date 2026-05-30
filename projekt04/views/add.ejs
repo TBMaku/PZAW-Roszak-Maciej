@@ -9,7 +9,9 @@
   <div class="app">
     <header style="margin-bottom:18px;">
       <h1>Dodaj notatkę</h1>
-      <div style="font-size:0.85rem;color:#6b7280;">Zalogowany jako <strong><%= user.username %></strong></div>
+      <% if (user) { %>
+        <div style="font-size:0.85rem;color:#6b7280;">Zalogowany jako <strong><%= user.username %></strong></div>
+      <% } %>
     </header>
 
     <% if (error) { %>

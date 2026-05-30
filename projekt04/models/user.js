@@ -24,24 +24,29 @@ db.exec(`
 `);
 
 const db_ops = {
-  create_user: db.prepare(
-    "INSERT INTO users (username, passhash, created_at) VALUES (?, ?, ?) RETURNING id;"
-  ),
-  get_user: db.prepare(
-    "SELECT id, username, attributes, created_at FROM users WHERE id = ?;"
-  ),
-  find_by_username: db.prepare(
-    "SELECT id, username, attributes, created_at FROM users WHERE username = ?;"
-  ),
-  get_auth_data: db.prepare(
-    "SELECT id, passhash FROM users WHERE username = ?;"
-  ),
-  get_attributes: db.prepare(
-    "SELECT attributes FROM users WHERE id = ?;"
-  ),
-  update_attributes: db.prepare(
-    "UPDATE users SET attributes = ? WHERE id = ?;"
-  ),
+  create_user: (username, passhash, created_at) =>
+    db.prepare("INSERT INTO users (username, passhash, created_at) VALUES (?, ?, ?) RETURNING id;")
+      .get(username, passhash, created_at),
+
+  get_user: (id) =>
+    db.prepare("SELECT id, username, attributes, created_at FROM users WHERE id = ?;")
+      .get(id),
+
+  find_by_username: (username) =>
+    db.prepare("SELECT id, username, attributes, created_at FROM users WHERE username = ?;")
+      .get(username),
+
+  get_auth_data: (username) =>
+    db.prepare("SELECT id, passhash FROM users WHERE username = ?;")
+      .get(username),
+
+  get_attributes: (id) =>
+    db.prepare("SELECT attributes FROM users WHERE id = ?;")
+      .get(id),
+
+  update_attributes: (attributes, id) =>
+    db.prepare("UPDATE users SET attributes = ? WHERE id = ?;")
+      .run(attributes, id),
 };
 
 function parseUser(row) {
@@ -56,13 +61,13 @@ function parseUser(row) {
 }
 
 export async function createUser(username, password) {
-  if (db_ops.find_by_username.get(username) != null) return null;
+  if (db_ops.find_by_username(username) != null) return null;
   const passhash = await argon2.hash(password, HASH_PARAMS);
-  return db_ops.create_user.get(username, passhash, Date.now());
+  return db_ops.create_user(username, passhash, Date.now());
 }
 
 export async function validatePassword(username, password) {
-  const auth = db_ops.get_auth_data.get(username);
+  const auth = db_ops.get_auth_data(username);
   if (auth != null && await argon2.verify(auth.passhash, password, HASH_PARAMS)) {
     return auth.id;
   }
@@ -70,17 +75,17 @@ export async function validatePassword(username, password) {
 }
 
 export function getUser(id) {
-  return parseUser(db_ops.get_user.get(id));
+  return parseUser(db_ops.get_user(id));
 }
 
 const FORBIDDEN_ATTRS = new Set(["id", "username", "passhash", "attributes", "created_at"]);
 
 export function addAttribute(user_id, name, value) {
   if (FORBIDDEN_ATTRS.has(name)) return "niedozwolona nazwa atrybutu";
-  const row = db_ops.get_attributes.get(user_id);
+  const row = db_ops.get_attributes(user_id);
   const attrs = row.attributes != null ? JSON.parse(row.attributes) : {};
   attrs[name] = value;
-  db_ops.update_attributes.run(JSON.stringify(attrs), user_id);
+  db_ops.update_attributes(JSON.stringify(attrs), user_id);
   return null;
 }
 
