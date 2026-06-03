@@ -100,6 +100,10 @@ app.post("/signup", async (req, res) => {
     res.render("signup", { error: "Hasła nie są identyczne.", user: null });
     return;
   }
+  if (username.length > 25 || password.length > 50) {
+    res.render("signup", { error: "Używasz za złej ilości znaków.", user: null });
+    return;
+  }
 
   const new_user = await createUser(username, password);
   if (new_user == null) {
@@ -122,11 +126,7 @@ app.post("/login", async (req, res) => {
 
   const user_id = await validatePassword(username, password);
   if (user_id == null) {
-    res.render("login", { error: "Niepoprawna nazwa użytkownika lub hasło.", next, user: null });
-    return;
-  }
-  if (username.length > 25 || password.length > 50) {
-    res.render("login", { error: "Używasz za dużej ilości znaków.", next, user: null });
+    res.render("login", { error: "Niepoprawna nazwa użytkownika lub hasło.", next, user: { username } });
     return;
   }
 
@@ -155,12 +155,6 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-
-  // if (err.type === 'entity.too.large' || err.status === 413) {
-  //   res.render("add", { user: res.locals.user, error: "Treść notatki jest za długa." });
-  //   return;
-  // }
-  // next(err);
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
