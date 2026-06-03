@@ -56,7 +56,7 @@ app.get("/edit/:id", login_required, (req, res) => {
     res.status(403).send("Brak uprawnień do edycji tej notatki.");
     return;
   }
-  res.render("edit", { note, user: res.locals.user });
+  res.render("edit", { note, user: res.locals.user, error: null });
 });
 
 app.post("/edit/:id", login_required, (req, res) => {
@@ -125,6 +125,10 @@ app.post("/login", async (req, res) => {
     res.render("login", { error: "Niepoprawna nazwa użytkownika lub hasło.", next, user: null });
     return;
   }
+  if (username.length > 25 || password.length > 50) {
+    res.render("login", { error: "Używasz za dużej ilości znaków.", next, user: null });
+    return;
+  }
 
   createSession(user_id, res);
   res.redirect(next);
@@ -138,12 +142,27 @@ app.get("/logout", (req, res) => {
 
 app.use((err, req, res, next) => {
   if (err.type === 'entity.too.large' || err.status === 413) {
-    res.render("add", { user: res.locals.user, error: "Treść notatki jest za długa." });
+    next = req.query.next || "/";
+    let path = req.path.split("/");
+    if (path[1] === "edit") {
+      const note = notes.getNoteById(path[2]);
+          res.render(path[1].toString(), { note, user: res.locals.user, error: "Treść notatki jest za długa.", next });
+    return;
+    }
+    res.render(path[1].toString(), { user: res.locals.user, error: "Treść jest za długa.", next });
     return;
   }
   next(err);
 });
 
+
+  // if (err.type === 'entity.too.large' || err.status === 413) {
+  //   res.render("add", { user: res.locals.user, error: "Treść notatki jest za długa." });
+  //   return;
+  // }
+  // next(err);
+
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
+
 });

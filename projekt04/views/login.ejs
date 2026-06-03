@@ -17,7 +17,7 @@
 
     <form method="POST" action="/login?next=<%= encodeURIComponent(next) %>" style="display:grid;gap:10px;">
       <input type="text" name="username" required placeholder="Nazwa użytkownika" minlength="3" maxlength="25">
-      <input type="password" name="password" required placeholder="Hasło" minlength="8">
+      <input type="password" name="password" required placeholder="Hasło" minlength="8" maxlength="50">
       <div style="display:flex;gap:8px;">
         <button class="btn-primary">Zaloguj</button>
         <a class="btn-secondary" href="/">Powrót</a>
