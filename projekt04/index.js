@@ -31,8 +31,17 @@ function canEdit(note, user) {
 }
 
 app.get("/", (req, res) => {
-  const allNotes = notes.getAllNotes();
-  res.render("index", { notes: allNotes, user: res.locals.user });
+  if (res.locals.user != null && res.locals.user.is_admin === true) {
+    const allNotes = notes.getAllNotes();
+    res.render("index", { notes: allNotes, user: res.locals.user });
+  }
+  else if (res.locals.user == null) {
+    res.render("index", { notes: [], user: null });
+  }
+  else {
+    const userNotes = notes.getAllNotes().filter(note => note.author_id === res.locals.user.id);
+    res.render("index", { notes: userNotes, user: res.locals.user });
+  }
 });
 
 app.get("/add", login_required, (req, res) => {
@@ -89,25 +98,25 @@ app.post("/signup", async (req, res) => {
   const { username, password, password_confirm } = req.body;
 
   if (!username || username.length < 3) {
-    res.render("signup", { error: "Nazwa użytkownika musi mieć min. 3 znaki.", user: null });
+    res.render("signup", { error: "Nazwa użytkownika musi mieć min. 3 znaki.", user: null, user: { username } });
     return;
   }
   if (!password || password.length < 8) {
-    res.render("signup", { error: "Hasło musi mieć min. 8 znaków.", user: null });
+    res.render("signup", { error: "Hasło musi mieć min. 8 znaków.", user: null, user: { username } });
     return;
   }
   if (password !== password_confirm) {
-    res.render("signup", { error: "Hasła nie są identyczne.", user: null });
+    res.render("signup", { error: "Hasła nie są identyczne.", user: null, user: { username } });
     return;
   }
   if (username.length > 25 || password.length > 50) {
-    res.render("signup", { error: "Używasz za złej ilości znaków.", user: null });
+    res.render("signup", { error: "Używasz za złej ilości znaków.", user: null, user: { username }});
     return;
   }
 
   const new_user = await createUser(username, password);
   if (new_user == null) {
-    res.render("signup", { error: "Użytkownik o tej nazwie już istnieje.", user: null });
+    res.render("signup", { error: "Użytkownik o tej nazwie już istnieje.", user: null, user: { username } });
     return;
   }
 

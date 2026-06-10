@@ -17,7 +17,10 @@
 
     <form method="POST" action="/login?next=<%= encodeURIComponent(next) %>" style="display:grid;gap:10px;">
       <input type="text" name="username" value="<%= user?.username %>" required placeholder="Nazwa użytkownika" minlength="3" maxlength="25">
-      <input type="password" name="password" required placeholder="Hasło" minlength="8" maxlength="50">
+      <div class="pas password-field">
+        <input type="password" id="password" name="password" required placeholder="Hasło" minlength="8" maxlength="50">
+        <button type="button" id="password-toggle" class="password-toggle" onclick="togglePassword()">Pokaż</button>
+      </div>
       <div style="display:flex;gap:8px;">
         <button class="btn-primary">Zaloguj</button>
         <a class="btn-secondary" href="/">Powrót</a>
@@ -29,4 +32,17 @@
     </div>
   </div>
 </body>
+<script>
+  function togglePassword() {
+    var passwordInput = document.getElementById('password');
+    var button = document.getElementById('password-toggle');
+    if (passwordInput.type == "password"){
+      passwordInput.type = "text";
+      button.textContent = "Ukryj";
+    } else {
+      passwordInput.type = "password";
+      button.textContent = "Pokaż";
+    };
+  }
+</script>
 </html>

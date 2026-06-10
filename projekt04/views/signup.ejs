@@ -16,9 +16,15 @@
     <% } %>
 
     <form method="POST" action="/signup" style="display:grid;gap:10px;">
-      <input type="text" name="username" required placeholder="Nazwa użytkownika (min. 3 znaki)" minlength="3" maxlength="25">
-      <input type="password" name="password" required placeholder="Hasło (min. 8 znaków)" minlength="8" maxlength="50">
-      <input type="password" name="password_confirm" required placeholder="Powtórz hasło" minlength="8" maxlength="50">
+      <input type="text" name="username" value="<%= user?.username %>" required placeholder="Nazwa użytkownika (min. 3 znaki)" minlength="3" maxlength="25">
+      <div class="pas password-field">
+        <input type="password" id="password" name="password" required placeholder="Hasło (min. 8 znaków)" minlength="8" maxlength="50">
+        <button type="button" id="password-toggle" class="password-toggle" onclick="togglePassword()">Pokaż</button>
+      </div>
+      <div class="pas password-field">
+        <input type="password" id="password_confirm" name="password_confirm" required placeholder="Powtórz hasło" minlength="8" maxlength="50">
+        <button type="button" id="password-toggle" class="password-toggle" onclick="togglePassword()">Pokaż</button>
+      </div>
       <div style="display:flex;gap:8px;">
         <button class="btn-primary">Zarejestruj</button>
         <a class="btn-secondary" href="/">Powrót</a>
@@ -30,4 +36,17 @@
     </div>
   </div>
 </body>
+<script>
+  function togglePassword() {
+    var passwordInput = document.getElementById('password');
+    var button = document.getElementById('password-toggle');
+    if (passwordInput.type == "password"){
+      passwordInput.type = "text";
+      button.textContent = "Ukryj";
+    } else {
+      passwordInput.type = "password";
+      button.textContent = "Pokaż";
+    };
+  }
+</script>
 </html>

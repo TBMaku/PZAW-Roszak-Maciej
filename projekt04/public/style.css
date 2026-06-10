@@ -77,6 +77,44 @@ button{
 
 button:hover{opacity:.92;transform:translateY(-1px)}
 
+.pas{
+  display:flex;
+  flex-direction:row;
+  gap:8px;
+}
+
+#password{
+  width:100%;
+}
+
+.password-field{
+  position:relative;
+}
+
+.password-field input[type='password']{
+  padding-right:72px;
+}
+
+.password-toggle{
+  position:absolute;
+  top:50%;
+  right:10px;
+  transform:translateY(-50%);
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  font-size:0.78rem;
+  color:#6b7280;
+  padding:4px 6px;
+  min-width:44px;
+  text-align:right;
+}
+
+.password-toggle:hover{
+  color:#0b78ff;
+  transform:translateY(-50%);
+}
+
 .actions{
   display:flex;
   gap:8px;
