@@ -1,3 +1,11 @@
+## Co robi aplikacja
+- Pozwala zarejestrować nowe konto użytkownika
+- Umożliwia logowanie i wylogowanie
+- Pozwala tworzyć nowe notatki
+- Umożliwia edycję i usuwanie notatek
+- Każdy użytkownik widzi wszystkie notatki, ale może edytować tylko swoje
+- Konto administratora ma dodatkowe uprawnienia: może edytować i usuwać wszystkie notatki
+
 ## Przygotowanie środowiska
 1. Uruchom generator sekretów dla środowiska:
 ```
@@ -34,14 +42,6 @@ http://localhost:8000
 - Administrator: 'admin' / hasło użytkownika
 - Student: 'student' / 'student1'
 
-## Co robi aplikacja
-- Pozwala zarejestrować nowe konto użytkownika
-- Umożliwia logowanie i wylogowanie
-- Pozwala tworzyć nowe notatki
-- Umożliwia edycję i usuwanie notatek
-- Każdy użytkownik widzi wszystkie notatki, ale może edytować tylko swoje
-- Konto administratora ma dodatkowe uprawnienia: może edytować i usuwać wszystkie notatki
-
 ## Technologie
 - Node.js + Express
 - EJS jako silnik szablonów
@@ -55,7 +55,7 @@ http://localhost:8000
 - Logowanie z przekierowaniem po próbie wejścia na stronę chronioną
 - Dodawanie notatek
 - Edytowanie i usuwanie notatek, jeśli jesteś właścicielem notatki
-- Widok wszystkich notatek na stronie głównej
+- Widok swoich notatek na stronie głównej
 
 
 ## Pliki ważne w projekcie
