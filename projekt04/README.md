@@ -3,7 +3,7 @@
 - Umożliwia logowanie i wylogowanie
 - Pozwala tworzyć nowe notatki
 - Umożliwia edycję i usuwanie notatek
-- Każdy użytkownik widzi wszystkie notatki, ale może edytować tylko swoje
+- Każdy użytkownik może edytować tylko swoje notatki
 - Konto administratora ma dodatkowe uprawnienia: może edytować i usuwać wszystkie notatki
 
 ## Przygotowanie środowiska
