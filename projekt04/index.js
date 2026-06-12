@@ -97,11 +97,11 @@ app.get("/signup", (req, res) => {
 app.post("/signup", async (req, res) => {
   const { username, password, password_confirm } = req.body;
 
-  if (!username || username.length < 3) {
+  if (!username || username.trim().length < 3) {
     res.render("signup", { error: "Nazwa użytkownika musi mieć min. 3 znaki.", user: null, user: { username } });
     return;
   }
-  if (!password || password.length < 8) {
+  if (!password || password.trim().length < 8) {
     res.render("signup", { error: "Hasło musi mieć min. 8 znaków.", user: null, user: { username } });
     return;
   }
@@ -109,8 +109,8 @@ app.post("/signup", async (req, res) => {
     res.render("signup", { error: "Hasła nie są identyczne.", user: null, user: { username } });
     return;
   }
-  if (username.length > 25 || password.length > 50) {
-    res.render("signup", { error: "Używasz za złej ilości znaków.", user: null, user: { username }});
+  if (username.trim().length > 25 || password.trim().length > 50) {
+    res.render("signup", { error: "Używasz za dużo znaków.", user: null, user: { username }});
     return;
   }
 
@@ -136,6 +136,10 @@ app.post("/login", async (req, res) => {
   const user_id = await validatePassword(username, password);
   if (user_id == null) {
     res.render("login", { error: "Niepoprawna nazwa użytkownika lub hasło.", next, user: { username } });
+    return;
+  }
+  if (username.trim().length < 3 || password.trim().length < 8) {
+    res.render("login", { error: "Nazwa użytkownika musi mieć min. 3 znaki, a hasło min. 8 znaków.", next, user: { username } });
     return;
   }
 

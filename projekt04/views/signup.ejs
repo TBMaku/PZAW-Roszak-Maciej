@@ -23,7 +23,7 @@
       </div>
       <div class="pas password-field">
         <input type="password" id="password_confirm" name="password_confirm" required placeholder="Powtórz hasło" minlength="8" maxlength="50">
-        <button type="button" id="password-toggle" class="password-toggle" onclick="togglePassword()">Pokaż</button>
+        <button type="button" id="password_confirm-toggle" class="password-toggle" onclick="toggleConfirmPassword()">Pokaż</button>
       </div>
       <div style="display:flex;gap:8px;">
         <button class="btn-primary">Zarejestruj</button>
@@ -46,6 +46,17 @@
     } else {
       passwordInput.type = "password";
       button.textContent = "Pokaż";
+    };
+  }
+    function toggleConfirmPassword() {
+    var passwordInput3 = document.getElementById('password_confirm');
+    var button3 = document.getElementById('password_confirm-toggle');
+    if (passwordInput3.type == "password"){
+      passwordInput3.type = "text";
+      button3.textContent = "Ukryj";
+    } else {
+      passwordInput3.type = "password";
+      button3.textContent = "Pokaż";
     };
   }
 </script>
